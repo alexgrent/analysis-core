@@ -257,7 +257,7 @@
 		<repository>
 			<id>nexus-ebi-snapshot-repo</id>
 			<name>The EBI internal snapshot repository</name>
-			<url>https://www.ebi.ac.uk/Tools/maven/repos/content/groups/ebi-snapshots/</url>
+			<url>http://localhost:8081/repository/maven-releases/</url>
 			<releases>
 				<enabled>false</enabled>
 			</releases>
@@ -266,4 +266,14 @@
 			</snapshots>
 		</repository>
 	</repositories>
+	<distributionManagement>
+		<repository>
+			<id>nexus-release</id>
+			<url>http://localhost:8081/repository/maven-releases/</url>
+		</repository>
+		<snapshotRepository>
+            		<id>nexus-snapshots</id>
+            		<url>http://localhost:8081/repository/maven-snapshots/</url>
+        	</snapshotRepository>
+   	 </distributionManagement>
 </project>
