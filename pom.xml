@@ -31,7 +31,6 @@
     </developers>
 
     <properties>
-        <start.class>org.reactome.server.analysis.core.Main</start.class>
         <maven.resources.version>3.2.0</maven.resources.version>
         <maven.compiler.version>3.8.1</maven.compiler.version>
         <maven.jar.version>3.1.0</maven.jar.version>
