@@ -30,9 +30,14 @@
         </developer>
     </developers>
 
-
     <properties>
         <start.class>org.reactome.server.analysis.core.Main</start.class>
+        <maven.resources.version>3.2.0</maven.resources.version>
+        <maven.compiler.version>3.8.1</maven.compiler.version>
+        <maven.jar.version>3.1.0</maven.jar.version>
+        <spring-boot.version>2.5.6</spring-boot.version>
+        <maven.source.version>3.2.0</maven.source.version>
+        <java.version>11</java.version>
     </properties>
 
     <dependencies>
@@ -40,18 +45,21 @@
         <dependency>
             <groupId>org.reactome.server.graph</groupId>
             <artifactId>graph-core</artifactId>
+            <version>1.0.0</version>
         </dependency>
 
-        <!--JSAP console reader-->
+        <!-- JSAP console reader -->
         <dependency>
             <groupId>com.martiansoftware</groupId>
             <artifactId>jsap</artifactId>
+            <version>2.1</version>
         </dependency>
 
         <!-- JUnit -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
+            <version>4.13.2</version>
             <scope>test</scope>
         </dependency>
 
@@ -59,56 +67,71 @@
         <dependency>
             <groupId>com.esotericsoftware</groupId>
             <artifactId>kryo</artifactId>
+            <version>5.2.0</version>
         </dependency>
 
         <!-- Jackson Databind -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
+            <version>2.12.5</version>
         </dependency>
 
         <!-- Apache HTTPComponents -->
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
+            <version>4.5.13</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-text -->
+        <!-- Apache Commons Text -->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-text</artifactId>
+            <version>1.9</version>
         </dependency>
 
-        <!-- Used for RadixTree implementation -->
+        <!-- Concurrent Trees (RadixTree) -->
         <dependency>
             <groupId>com.googlecode.concurrent-trees</groupId>
             <artifactId>concurrent-trees</artifactId>
+            <version>2.6.1</version>
         </dependency>
 
-        <!-- CERN jet -->
+        <!-- CERN Jet -->
         <dependency>
             <groupId>colt</groupId>
             <artifactId>colt</artifactId>
+            <version>1.2.0</version>
         </dependency>
 
+        <!-- Joda-Time -->
         <dependency>
             <groupId>joda-time</groupId>
             <artifactId>joda-time</artifactId>
+            <version>2.10.10</version>
         </dependency>
 
+        <!-- Spring Web -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-web</artifactId>
+            <version>5.3.10</version>
             <scope>provided</scope>
         </dependency>
 
+        <!-- Commons FileUpload -->
         <dependency>
             <groupId>commons-fileupload</groupId>
             <artifactId>commons-fileupload</artifactId>
+            <version>1.4</version>
         </dependency>
+
+        <!-- Commons Codec -->
         <dependency>
             <groupId>commons-codec</groupId>
             <artifactId>commons-codec</artifactId>
+            <version>1.15</version>
         </dependency>
     </dependencies>
 
@@ -190,72 +213,69 @@
                 </executions>
             </plugin>
 
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-source-plugin</artifactId>
-				<version>${maven.source.version}</version>
-				<executions>
-					<execution>
-						<id>attach-sources</id>
-						<goals>
-							<goal>jar</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>${maven.source.version}</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
 
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-checkstyle-plugin</artifactId>
-				<version>3.1.1</version>
-				<dependencies>
-					<!-- This dependency allows Checkstyle to understand Java 11 syntax -->
-					<dependency>
-						<groupId>com.puppycrawl.tools</groupId>
-						<artifactId>checkstyle</artifactId>
-						<version>8.44</version>
-					</dependency>
-				</dependencies>
-				<executions>
-					<execution>
-						<id>checkstyle-check</id>
-						<goals>
-							<goal>check</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<configLocation>checkstyle.xml</configLocation>
-					<!-- Optional: Set encoding -->
-					<encoding>UTF-8</encoding>
-				</configuration>
-			</plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>3.1.1</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>com.puppycrawl.tools</groupId>
+                        <artifactId>checkstyle</artifactId>
+                        <version>8.44</version>
+                    </dependency>
+                </dependencies>
+                <executions>
+                    <execution>
+                        <id>checkstyle-check</id>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <configLocation>checkstyle.xml</configLocation>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
 
-		</plugins>
-	</build>
+        </plugins>
+    </build>
 
-	<repositories>
-		<!-- EBI SNAPSHOT repo -->
-		<repository>
-			<id>nexus-ebi-snapshot-repo</id>
-			<name>The EBI internal snapshot repository</name>
-			<url>http://localhost:8081/repository/maven-releases/</url>
-			<releases>
-				<enabled>false</enabled>
-			</releases>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</repository>
-	</repositories>
-	<distributionManagement>
-		<repository>
-			<id>nexus-release</id>
-			<url>http://localhost:8081/repository/maven-releases/</url>
-		</repository>
-		<snapshotRepository>
-            		<id>nexus-snapshots</id>
-            		<url>http://localhost:8081/repository/maven-snapshots/</url>
-        	</snapshotRepository>
-   	 </distributionManagement>
+    <repositories>
+        <repository>
+            <id>nexus-ebi-snapshot-repo</id>
+            <name>The EBI internal snapshot repository</name>
+            <url>http://localhost:8081/repository/maven-releases/</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+    <distributionManagement>
+        <repository>
+            <id>nexus-release</id>
+            <url>http://localhost:8081/repository/maven-releases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>nexus-snapshots</id>
+            <url>http://localhost:8081/repository/maven-snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
 </project>
