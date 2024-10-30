@@ -2,9 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
-
-             <parent>
+    <parent>
         <groupId>org.reactome.maven</groupId>
         <artifactId>reactome-parent</artifactId>
         <version>1.0.5</version>
@@ -12,7 +10,7 @@
 
     <groupId>org.reactome.server.tools</groupId>
     <artifactId>analysis-core</artifactId>
-    <version>5.8.6</version>
+    <version>3.4.9</version>
     <packaging>jar</packaging>
 
     <description>The Reactome analysis-core extracts data from the graph-database to create the intermediate data format
@@ -37,35 +35,28 @@
         </developer>
     </developers>
 
+
     <properties>
-        <maven.resources.version>3.2.0</maven.resources.version>
-        <maven.compiler.version>3.8.1</maven.compiler.version>
-        <maven.jar.version>3.1.0</maven.jar.version>
-        <spring-boot.version>2.5.6</spring-boot.version>
-        <maven.source.version>3.2.0</maven.source.version>
-        <java.version>11</java.version>
+        <start.class>org.reactome.server.analysis.core.Main</start.class>
     </properties>
 
     <dependencies>
-        <!-- SLF4J Logging -->
+        <!-- Reactome Graph-Core -->
         <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>1.7.32</version> <!-- Check for the latest version -->
+            <groupId>org.reactome.server.graph</groupId>
+            <artifactId>graph-core</artifactId>
         </dependency>
 
-        <!-- JSAP console reader -->
+        <!--JSAP console reader-->
         <dependency>
             <groupId>com.martiansoftware</groupId>
             <artifactId>jsap</artifactId>
-            <version>2.1</version>
         </dependency>
 
         <!-- JUnit -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.13.2</version>
             <scope>test</scope>
         </dependency>
 
@@ -73,71 +64,56 @@
         <dependency>
             <groupId>com.esotericsoftware</groupId>
             <artifactId>kryo</artifactId>
-            <version>5.2.0</version>
         </dependency>
 
         <!-- Jackson Databind -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>2.12.5</version>
         </dependency>
 
         <!-- Apache HTTPComponents -->
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
-            <version>4.5.13</version>
         </dependency>
 
-        <!-- Apache Commons Text -->
+        <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-text -->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-text</artifactId>
-            <version>1.9</version>
         </dependency>
 
-        <!-- Concurrent Trees (RadixTree) -->
+        <!-- Used for RadixTree implementation -->
         <dependency>
             <groupId>com.googlecode.concurrent-trees</groupId>
             <artifactId>concurrent-trees</artifactId>
-            <version>2.6.1</version>
         </dependency>
 
-        <!-- CERN Jet -->
+        <!-- CERN jet -->
         <dependency>
             <groupId>colt</groupId>
             <artifactId>colt</artifactId>
-            <version>1.2.0</version>
         </dependency>
 
-        <!-- Joda-Time -->
         <dependency>
             <groupId>joda-time</groupId>
             <artifactId>joda-time</artifactId>
-            <version>2.10.10</version>
         </dependency>
 
-        <!-- Spring Web -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-web</artifactId>
-            <version>5.3.10</version>
             <scope>provided</scope>
         </dependency>
 
-        <!-- Commons FileUpload -->
         <dependency>
             <groupId>commons-fileupload</groupId>
             <artifactId>commons-fileupload</artifactId>
-            <version>1.4</version>
         </dependency>
-
-        <!-- Commons Codec -->
         <dependency>
             <groupId>commons-codec</groupId>
             <artifactId>commons-codec</artifactId>
-            <version>1.15</version>
         </dependency>
     </dependencies>
 
@@ -238,6 +214,7 @@
                 <artifactId>maven-checkstyle-plugin</artifactId>
                 <version>3.1.1</version>
                 <dependencies>
+                    <!-- This dependency allows Checkstyle to understand Java 11 syntax -->
                     <dependency>
                         <groupId>com.puppycrawl.tools</groupId>
                         <artifactId>checkstyle</artifactId>
@@ -254,6 +231,7 @@
                 </executions>
                 <configuration>
                     <configLocation>checkstyle.xml</configLocation>
+                    <!-- Optional: Set encoding -->
                     <encoding>UTF-8</encoding>
                 </configuration>
             </plugin>
@@ -262,10 +240,24 @@
     </build>
 
     <repositories>
+        <!-- EBI repo -->
+        <repository>
+            <id>nexus-ebi-repo</id>
+            <name>The EBI internal repository</name>
+            <url>https://www.ebi.ac.uk/Tools/maven/repos/content/groups/ebi-repo/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+
+        <!-- EBI SNAPSHOT repo -->
         <repository>
             <id>nexus-ebi-snapshot-repo</id>
             <name>The EBI internal snapshot repository</name>
-            <url>http://localhost:8081/repository/maven-releases/</url>
+            <url>https://www.ebi.ac.uk/Tools/maven/repos/content/groups/ebi-snapshots/</url>
             <releases>
                 <enabled>false</enabled>
             </releases>
@@ -274,14 +266,4 @@
             </snapshots>
         </repository>
     </repositories>
-    <distributionManagement>
-        <repository>
-            <id>nexus-release</id>
-            <url>http://localhost:8081/repository/maven-releases/</url>
-        </repository>
-        <snapshotRepository>
-            <id>nexus-snapshots</id>
-            <url>http://localhost:8081/repository/maven-releases/</url>
-        </snapshotRepository>
-    </distributionManagement>
 </project>
