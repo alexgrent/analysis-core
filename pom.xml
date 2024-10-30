@@ -5,7 +5,7 @@
 
     <groupId>org.reactome.server.tools</groupId>
     <artifactId>analysis-core</artifactId>
-    <version>1.0.5</version>
+    <version>1.0.1</version>
     <packaging>jar</packaging>
 
     <description>The Reactome analysis-core extracts data from the graph-database to create the intermediate data format
@@ -41,13 +41,6 @@
     </properties>
 
     <dependencies>
-        <!-- Reactome Graph-Core -->
-        <dependency>
-            <groupId>org.reactome.server.graph</groupId>
-            <artifactId>graph-core</artifactId>
-            <version>1.0.0</version>
-        </dependency>
-
         <!-- JSAP console reader -->
         <dependency>
             <groupId>com.martiansoftware</groupId>
