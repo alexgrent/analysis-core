@@ -1,3 +1,4 @@
+current_version=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
 echo "Current version: $current_version"
 major=${current_version%%.*}            
 rest=${current_version#*.}               
