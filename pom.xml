@@ -10,7 +10,7 @@
 
     <groupId>org.reactome.server.tools</groupId>
     <artifactId>analysis-core</artifactId>
-    <version>4.450.0</version>
+    <version>4.451.0</version>
     <packaging>jar</packaging>
 
     <description>The Reactome analysis-core extracts data from the graph-database to create the intermediate data format
