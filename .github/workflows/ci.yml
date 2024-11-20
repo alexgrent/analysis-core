@@ -16,7 +16,7 @@ permissions:
 
 jobs:
     lint:
-        if: ${{ github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch' }}
+        if: ${{ github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch' || github.ref == 'refs/heads/master' }}
         runs-on: ubuntu-latest
         env:
             REPO_DIR: /opt/analysis-core
@@ -35,7 +35,32 @@ jobs:
                 while IFS= read -r LINT_MSG; do echo "::warning::${LINT_MSG}"; done < lint.log
                 exit 1
 
+    jar-build:
+        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
+        needs: lint
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+
+            - name: Set up JDK
+              uses: actions/setup-java@v3
+              with:
+                java-version: 11
+                distribution: 'temurin'
+
+            - name: Build JAR File
+              run: |
+                mkdir -p build
+                ./gradlew clean build -x test
+                cp build/libs/*.jar build/analysis-core.jar
+
+            - uses: actions/upload-artifact@v4
+              with:
+                name: jar-artifact
+                path: build/analysis-core.jar
+
     docker-build:
+        needs: jar-build
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v4
@@ -56,7 +81,7 @@ jobs:
 
     docker-push:
         if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
-        needs: docker-build
+        needs: [jar-build, docker-build]
         runs-on: ubuntu-latest
         steps:
             - uses: actions/download-artifact@v4
@@ -90,14 +115,3 @@ jobs:
                 docker load --input /tmp/image.tar
                 docker image tag tmp-tag $AWS_REGISTRY/$AWS_REGISTRY_ALIAS/$AWS_REPO:$IMG_TAG
                 docker push $AWS_REGISTRY/$AWS_REGISTRY_ALIAS/$AWS_REPO:$IMG_TAG
-
-            - name: Build JAR File
-              run: |
-                mkdir -p build
-                ./gradlew clean build -x test
-                cp build/libs/*.jar build/analysis-core.jar
-
-            - uses: actions/upload-artifact@v4
-              with:
-                name: jar-artifact
-                path: build/analysis-core.jar
